@@ -30,6 +30,13 @@ class LoginController extends Controller
 
     public function store(Request $request)
     {
+//        $validated = $request->validate([
+//            'email' => ['required', 'string', 'max:50', 'email', 'unique:users'],
+//            'password' => ['required', 'string', 'min:7', 'max:50'],
+//
+//        ]);
+//
+//        dd($validated);
 //        authenticate user
 //        session(['alert' => __('Добро пожаловать!')]);
         alert(__('Добро пожаловать!'));

@@ -16,13 +16,15 @@
         </x-card-header>
 
         <x-card-body>
+            <x-errors />
+
             <x-form action="{{ route('register.store') }}" method="POST">
 {{--                <input type="hidden" name="_token" value="{{ csrf_token() }}">--}}
 {{--                ниже приведенный пример делает тоже самое (разместим его в ф-ле form.blade.php)--}}
 {{--                @csrf --}}
                 <x-form-item>
                     <x-label required>{{ __('Имя') }}</x-label>
-                    <x-input name="name"  autofocus />
+                    <x-input name="name" autofocus />
                 </x-form-item>
 
                 <x-form-item>
@@ -37,12 +39,17 @@
 
                 <x-form-item>
                     <x-label required>{{ __('Введите пароль ещё раз') }}</x-label>
-                    <x-input type="password" name="password-confirmation"  />
+                    <x-input type="password" name="password_confirmation"  />
                 </x-form-item>
 
+{{--                <x-form-item>--}}
+{{--                    <x-checkbox name="remember" >--}}
+{{--                        {{__('Я согласен на обработку пользовательских данных')}}--}}
+{{--                    </x-checkbox>--}}
+{{--                </x-form-item>--}}
                 <x-form-item>
-                    <x-checkbox name="remember" >
-                        {{__('Я согласен на обработку пользовательских данных')}}
+                    <x-checkbox name="agreement" :checked="!! request()->old('agreement')">
+                        {{ __('Я согласен на обработку пользовательский данных') }}
                     </x-checkbox>
                 </x-form-item>
 
@@ -56,3 +63,7 @@
 
     </x-card>
 @endsection
+
+
+
+

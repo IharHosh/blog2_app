@@ -18,9 +18,13 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'name', 'email', 'avatar',
+        'active', 'admin',
         'password',
+    ];
+    protected $attributes = [
+        'admin' => false,
+        'active' => true,
     ];
 
     /**
@@ -34,11 +38,11 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * the attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+//    protected $casts = [
+//        'email_verified_at' => 'datetime', // закомментируем так как эту строку мы удалили из миграции
+//    ];
 }

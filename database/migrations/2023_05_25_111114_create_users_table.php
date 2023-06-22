@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('avatar')->nullable();
-            $table->boolean('active')->default('true');
+            $table->boolean('active')->default(true);
+
 
             $table->string('password');
             $table->rememberToken();
@@ -33,5 +34,3 @@ return new class extends Migration
         Schema::dropIfExists('users');
     }
 };
-
-
