@@ -14,22 +14,23 @@ class PostController extends Controller
 {
     public function index()
     {
-        $post = (object) [
-            'id'=> 123,
-
-            'title' => 'Lorem ipsum dolor sit amet.',
-
-            'content' => 'Lorem ipsum <strong>dolor</strong> sit amet, consecrate radicalising elite. Dulcimers, temporal?',
-        ];
-
-
-        $posts = array_fill(0, 10, $post);
+        $posts = Post::query()->paginate(5);
 
         return view('user.posts.index', compact('posts'));
     }
 
     public function create()
     {
+        for ($i=0; $i<1; $i++){
+            Post::query()->create([
+                'user_id' => User::query()->value('id'),
+                'title' => fake()->sentence(),
+                'content' => fake()->paragraph(),
+                'published' => true,
+                'published_at' => fake()->dateTimeBetween(now()->subYear(), now()),
+            ]);
+        }
+        echo 'ok';
 
         return view('user.posts.create');
     }
@@ -59,8 +60,9 @@ class PostController extends Controller
             'published_at' => ['nullable', 'string', 'date'],
             'published' => ['nullable', 'boolean'],
         ]);
+//            dd($validated); // - выведем отправленные данные из формы страницы
 
-
+//        dd($post->toArray());
         $post = Post::query()->create([
             'user_id' => User::query()->value('id'),
             'title' => $validated['title'],
@@ -69,9 +71,9 @@ class PostController extends Controller
             'published' => $validated['published'] ?? false,
         ]);
 //        CreatePost::run($request->all());
-        dd($post->toArray());
-
-        dd($validated);
+//        dd($post->toArray());
+//
+//        dd($validated);
 
 //        $title = $request->input('title');
 //        $content = $request->input('content');

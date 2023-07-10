@@ -42,7 +42,7 @@ use Illuminate\Support\Facades\Route;
     Route::post('/blog/{post}/like', [BlogController::class, 'like'])->name('blog.like');
 
 
-//Route::resource('/posts/{post}/comments', CommentController::class)->only('index', 'show');
+//    Route::resource('/posts/{post}/comments', CommentController::class)->only('index', 'show');
 // создает все маршруты для всех методов (вышесозданных)
 // если добавить ->only в скобках параметры которые будут задействованы
 

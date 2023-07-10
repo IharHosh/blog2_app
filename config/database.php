@@ -42,7 +42,7 @@ return [
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
-
+//
 //        'mysql' => [
 //            'read' => [
 //                'host' => [
@@ -68,9 +68,9 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-//            'host' => env('DB_HOST', '127.0.0.1'),
-//            'host' => env('DB_HOST', 'mysql'),
-            'host' => env('DB_HOST', 'localhost'),
+//            'host' => env('DB_HOST', '127.0.0.1'), //связывается с БД при использовании tinker - watcher
+//            'host' => env('DB_HOST', 'mysql'), //связывается с БД при использовании tinker - watcher
+            'host' => env('DB_HOST', 'localhost'), //связывается с БД при использовании tinker - watcher
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),

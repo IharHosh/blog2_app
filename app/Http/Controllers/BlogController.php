@@ -2,67 +2,67 @@
 
 namespace App\Http\Controllers;
 
-use Faker\Provider\Lorem;
+use App\Models\Post;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
 
 class BlogController extends Controller
 {
     public function index(Request $request)
     {
-//        $data = $request->all();
-        $search = $request ->input('search');
-        $category_id = $request ->input('category_id');
-//        dd($data);
-//        dd($search, $category_id);
+        $validated = $request->validate([
+            'search' => ['nullable', 'string', 'max:50'],
+            'from_date' => ['nullable', 'string', 'date'],
+            'to_date' => ['nullable', 'string', 'date', 'after:from_date'],
+            'tag' => ['nullable', 'string', 'max:10'],
+        ]);
 
-        $post = (object) [
-            'id'=> 123,
+        $query = Post::query()
 
-            'title' => 'Lorem ipsum dolor sit amet.',
+        ->where('published', true)
+        ->whereNotNull('published_at');
 
-            'content' => 'Lorem ipsum <strong>dolor</strong> sit amet, consecrate radicalising elite. Dulcimers, temporal?',
+        if ($search = $validated['search'] ?? null) {
+            $query->where('title', 'like', "%{$search}%");
+            $query->orWhere('content', 'like', "%{$search}%");
+        }
 
-            'category_id' => 1,
-        ];
+        if ($fromDate = $validated['from_date'] ?? null) {
+            $query->where('published_at', '>=', new Carbon($fromDate));
+        }
+
+//        dd($fromDate);
+
+        if ($toDate = $validated['to_date'] ?? null) {
+            $query->where('published_at', '<=', new Carbon($toDate));
+        }
+
+        if ($tag = $validated['tag'] ?? null) {
+            $query->whereJsonContains('tags', $tag);
+        }
+
+        $posts = $query->latest('published_at')
+            ->paginate(5);
 
 
-        $posts = array_fill(0, 10, $post);
 
-        $posts = array_filter($posts, function ($post) use($search, $category_id) {
-            if ($search && ! str_contains(strtolower($post->title), strtolower($search))) {
-                return false;
-            }
-            if ($category_id && $post->category_id != $category_id) {
-                return false;
-            }
-            return true;
-
-        });
+//        $posts = Post::query()
+//            ->when($validated['search'] ?? null,
+//            function (Builder $query, string $search){
+//                $query->where('title', 'like', "%{$search}%");
+//                $query->orWhere('content', 'like', "%{$search}%");
+//            }
+//
+//            )->latest('published_at')
+//            ->paginate(5);
 
 
-//        dd - остановит выполнение скрипта и выведет на экран то что мы в неё передадим
-//        dd($posts);
-
-        $categories = [
-            null => __('Все категории'),
-            1 => __('Первая категория'),
-            2 => __('Вторая категория')
-        ];
-
-        return view('blog.index', compact('posts', 'categories'));
+        return view('blog.index', compact('posts'));
+//        return view('blog.index', compact('posts', 'categories'));
     }
 
-    public function show($post)
+    public function show(Request $request, Post $post)
     {
-        $post = (object) [
-            'id'=> 123,
-
-            'title' => 'Lorem ipsum dolor sit amet.',
-
-            'content' => 'Lorem ipsum <strong>dolor</strong> sit amet, consecrate radicalising elite. Dulcimers, temporal?',
-        ];
-
          return view('blog.show', compact('post'));
     }
 
@@ -71,3 +71,9 @@ class BlogController extends Controller
         return "Поставь LIKE $post!";
     }
 }
+//use App\Models\Post;
+//use Illuminate\Support\Collection;
+//
+//Post::query()->chunk(2, function (Collection $posts){
+//    dd($posts);
+//});

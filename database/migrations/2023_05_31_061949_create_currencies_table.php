@@ -16,10 +16,11 @@ return new class extends Migration
             $table->timestamps();
 
             $table->string('name');
-            $table->decimal('price')->unsigned(); // decimal - позволяет не округлять цифр. значение
-            $table->boolean('active')->default(true);
-            $table->timestamp('active_at')->nullable();
-            $table->integer('sort')->unsigned()->default(999);
+
+//            $table->decimal('price')->unsigned(); // decimal - позволяет не округлять цифр. значение
+//            $table->boolean('active')->default(true);
+//            $table->timestamp('active_at')->nullable();
+//            $table->integer('sort')->unsigned()->default(999);
         });
     }
 

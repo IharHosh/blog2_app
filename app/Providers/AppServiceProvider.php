@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 //use Illuminate\View\View;
 use Illuminate\Support\Facades\View;
@@ -38,5 +39,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('balance2', 12345);
             $view->with('balance3', 12345);
         });
+
+        Paginator::useBootstrapFive();
     }
 }
